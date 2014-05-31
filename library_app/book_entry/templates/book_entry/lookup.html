@@ -1,0 +1,6 @@
+<form action="{% url 'book_entry:do_lookup' %}" method="post">
+{% csrf_token %}
+<label>Enter the ISBN:</label><p>
+<input type="text" name="isbn" id="isbn"/><p>
+<input type="submit" value="Look Up"/>
+</form>
