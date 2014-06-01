@@ -15,6 +15,9 @@ def entry(request):
 
     page = requests.get(''.join(['http://classify.oclc.org/classify2/ClassifyDemo?search-standnum-txt=', isbn]))
     tree = html.fromstring(page.text)
+    if not tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()') : # Oh dear god, please fix me
+        page = requests.get(''.join(['http://classify.oclc.org', ''.join(tree.xpath('//*[@id="results-table"]/tbody/tr[1]/td[1]/span[1]/a/@href'))]))
+        tree = html.fromstring(page.text)
     title = tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()')
     author = tree.xpath('//*[@id="display-Summary"]/dl/dd[2]/a[1]/text()')
     ddc = tree.xpath('//*[@id="classSummaryData"]/tbody/tr[1]/td[2]/text()')
