@@ -1,0 +1,16 @@
+<form action="{% url 'book_entry:save' %}" method="post">
+{% csrf_token %}
+<label>ISBN:</label>
+<span name='isbn'>{{ isbn }}</span>
+<p>
+<label>Title:</label>
+<span name='title'>{{ title }}</span>
+<p>
+<label>Author:</label>
+<span name='author'>{{ author }}</span>
+<p>
+<label>DDC:</label>
+<span name='ddc'>{{ ddc }}</span>
+<p>
+<input type="submit" value="Save"/>
+</form>
