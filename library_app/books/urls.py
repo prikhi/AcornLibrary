@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from book_entry import views
+from books import views
 
 urlpatterns = patterns('',
     url(r'^$', views.lookup, name='lookup'),

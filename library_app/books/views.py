@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 
-from book_entry.models import Book
+from books.models import Book
 
 from lxml import html
 import requests
 
 # Create your views here.
 def lookup(request):
-    return render(request, 'book_entry/lookup.html', {})
+    return render(request, 'books/lookup.html', {})
 
 def entry(request):
     isbn = request.POST['isbn']
@@ -28,7 +28,7 @@ def entry(request):
                'ddc': ''.join(ddc)
     }
 
-    return render(request, 'book_entry/entry.html', context)
+    return render(request, 'books/entry.html', context)
 
 def save(request):
     b = Book(isbn = request.POST.get('isbn', 0),
@@ -36,9 +36,9 @@ def save(request):
              author = request.POST.get('author', ''),
              ddc = request.POST.get('ddc', ''))
     b.save()
-    return redirect('/book_entry')
+    return redirect('/books')
 
 def detail(request, isbn):
     book = get_object_or_404(Book, isbn=isbn)
     context = {'book': book,}
-    return render(request, 'book_entry/index.html', context)
+    return render(request, 'books/index.html', context)
