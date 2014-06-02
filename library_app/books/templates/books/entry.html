@@ -1,16 +1,16 @@
 <form action="{% url 'books:save' %}" method="post">
 {% csrf_token %}
 <label>ISBN:</label>
-<span name='isbn'>{{ isbn }}</span>
+<input name='isbn' value="{{ isbn }}" />
 <p>
 <label>Title:</label>
-<span name='title'>{{ title }}</span>
+<input name='title' value="{{ title }}" />
 <p>
 <label>Author:</label>
-<span name='author'>{{ author }}</span>
+<input name='author' value="{{ author }}" />
 <p>
 <label>DDC:</label>
-<span name='ddc'>{{ ddc }}</span>
+<input name='ddc' value="{{ ddc }}" />
 <p>
 <input type="submit" value="Save" autofocus/>
 </form>
