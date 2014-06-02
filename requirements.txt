@@ -1,2 +1,4 @@
-Django==1.6.5
-South==0.8.4
+Django==1.6
+South==0.8
+lxml==3.3
+requests==2.3
