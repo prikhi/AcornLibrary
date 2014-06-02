@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'library_app.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^books/', include('books.urls', namespace="books")),
+    url(r'', include('books.urls', namespace="books")),
     url(r'^admin/', include(admin.site.urls)),
 )

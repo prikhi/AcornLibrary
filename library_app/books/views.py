@@ -36,7 +36,7 @@ def save(request):
              author = request.POST.get('author', ''),
              ddc = request.POST.get('ddc', ''))
     b.save()
-    return redirect('/books')
+    return redirect('/')
 
 def detail(request, isbn):
     book = get_object_or_404(Book, isbn=isbn)
