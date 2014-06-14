@@ -2,15 +2,27 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 
 from books.models import Book
+from books.models import BookForm
 
 from lxml import html
 import requests
 
 # Create your views here.
+
+def entry(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+    form = BookForm()
+    return render(request, 'books/entry.html', {
+        'form': form,
+    })
+
 def lookup(request):
     return render(request, 'books/lookup.html', {})
 
-def entry(request):
+def old_entry(request):
     isbn = request.POST['isbn']
 
     page = requests.get(''.join(['http://classify.oclc.org/classify2/ClassifyDemo?search-standnum-txt=', isbn]))

@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 # Create your models here.
 class Book(models.Model):
@@ -13,3 +14,8 @@ class Book(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class BookForm(ModelForm):
+    class Meta:
+        model = Book
+        fields = ['isbn', 'title', 'author', 'ddc', 'dewey_desc', 'location', 'owner']
