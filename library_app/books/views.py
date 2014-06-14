@@ -15,7 +15,9 @@ def entry(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-    form = BookForm()
+            form = BookForm()
+    else:
+        form = BookForm()
     return render(request, 'books/entry.html', {
         'form': form,
     })
