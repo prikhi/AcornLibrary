@@ -2,6 +2,8 @@ from django.db import models
 from django.forms import ModelForm
 
 # Create your models here.
+
+
 class Book(models.Model):
     isbn = models.IntegerField()
     title = models.CharField(max_length=200)
@@ -14,6 +16,7 @@ class Book(models.Model):
 
     def __unicode__(self):
         return self.title
+
 
 class BookForm(ModelForm):
     class Meta:
