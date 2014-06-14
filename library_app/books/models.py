@@ -5,14 +5,15 @@ from django.forms import ModelForm
 
 
 class Book(models.Model):
-    isbn = models.IntegerField()
+    isbn = models.IntegerField(null=True, blank=True)
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
-    ddc = models.CharField(max_length=20)
-    dewey_desc = models.CharField(max_length=200)
-    description = models.CharField(max_length=4000)
-    location = models.CharField(max_length=200)
-    owner = models.CharField(max_length=200)
+    dewey_decimal = models.CharField(max_length=20, blank=True)
+    dewey_description = models.CharField(max_length=200, blank=True)
+    description = models.TextField(blank=True)
+    location = models.CharField(max_length=200, blank=True)
+    owner = models.CharField(max_length=200, blank=True)
+    added_on = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
         return self.title
@@ -21,4 +22,4 @@ class Book(models.Model):
 class BookForm(ModelForm):
     class Meta:
         model = Book
-        fields = ['isbn', 'title', 'author', 'ddc', 'dewey_desc', 'location', 'owner']
+        fields = ['isbn', 'title', 'author', 'dewey_decimal', 'dewey_description', 'location', 'owner']
