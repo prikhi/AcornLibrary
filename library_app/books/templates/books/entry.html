@@ -3,18 +3,7 @@
 {% block title %}Book Entry{% endblock %}
 
 {% block content %}
-<script>
-function lookup(isbn) {
-    $.getJSON("/lookup/", { isbn: isbn },
-        function(json) {
-            $("#id_title").val(json['title']);
-    });
-}
-function addClickHandler() {
-    $("#get_info").click(function(){ lookup($("#id_isbn").val()) });
-}
-$(document).ready(addClickHandler);
-</script>
+<script src="{{ STATIC_URL }}books/js/lookup.js" type="text/javascript" charset="utf-8"></script>
 <form action="{% url 'books:entry' %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input id="get_info" type="button" value="Get Info"/>
