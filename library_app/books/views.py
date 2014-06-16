@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.utils import simplejson
 
 from books.models import Book
 from books.models import BookForm
@@ -22,8 +23,28 @@ def entry(request):
         'form': form,
     })
 
-
 def lookup(request):
+    results = {'success': False}
+    if request.method == 'GET':
+        isbn = request.GET['isbn']
+        page = requests.get(''.join(['http://classify.oclc.org/classify2/ClassifyDemo?search-standnum-txt=', isbn]))
+        tree = html.fromstring(page.text)
+        if not tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()'):  # Oh dear god, please fix me
+            page = requests.get(''.join(['http://classify.oclc.org', ''.join(tree.xpath('//*[@id="results-table"]/tbody/tr[1]/td[1]/span[1]/a/@href'))]))
+            tree = html.fromstring(page.text)
+        title = tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()')
+        author = tree.xpath('//*[@id="display-Summary"]/dl/dd[2]/a[1]/text()')
+        ddc = tree.xpath('//*[@id="classSummaryData"]/tbody/tr[1]/td[2]/text()')
+
+        results = {'success': True,
+                   'title': ''.join(title),  # Why are these lists?
+                   'author': ''.join(author),
+                   'ddc': ''.join(ddc)}
+    json = simplejson.dumps(results)
+    return HttpResponse(json, mimetype='application/json')
+        
+
+def old_lookup(request):
     return render(request, 'books/lookup.html', {})
 
 
