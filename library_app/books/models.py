@@ -23,3 +23,8 @@ class BookForm(ModelForm):
     class Meta:
         model = Book
         fields = ['isbn', 'title', 'author', 'dewey_decimal', 'dewey_description', 'location', 'owner']
+        labels = {
+            'isbn': 'ISBN',
+            'dewey_decimal': 'Dewey Decimal #',
+            'dewey_description': 'Dewey Description',
+        }

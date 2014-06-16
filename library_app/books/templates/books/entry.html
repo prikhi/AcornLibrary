@@ -1,4 +1,10 @@
+{% extends "books/base.html" %}
+
+{% block title %}Book Entry{% endblock %}
+
+{% block content %}
 <form action="{% url 'books:entry' %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Save" />
 </form>
+{% endblock %}
