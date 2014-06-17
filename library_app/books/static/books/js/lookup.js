@@ -6,11 +6,13 @@ function lookup(isbn) {
                 $("#id_title").val(json['title']);
                 $("#id_author").val(json['author']);
                 $("#id_dewey_decimal").val(json['dewey_decimal']);
+                $('#spinner').fadeOut('fast');
         } else {
             $('#spinner').fadeOut('fast', function(){
                 alert("ISBN not found");
             });            
         }
+        
     });
 }
 function addClickHandler() {
