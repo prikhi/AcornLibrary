@@ -34,48 +34,14 @@ def lookup(request):
             tree = html.fromstring(page.text)
         title = tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()')
         author = tree.xpath('//*[@id="display-Summary"]/dl/dd[2]/a[1]/text()')
-        ddc = tree.xpath('//*[@id="classSummaryData"]/tbody/tr[1]/td[2]/text()')
-
-        results = {'success': True,
-                   'title': ''.join(title),  # Why are these lists?
-                   'author': ''.join(author),
-                   'ddc': ''.join(ddc)}
+        dewey_decimal = tree.xpath('//*[@id="classSummaryData"]/tbody/tr[1]/td[2]/text()')
+        if title:
+            results = {'success': True,
+                       'title': ''.join(title),  # Why are these lists?
+                       'author': ''.join(author),
+                       'dewey_decimal': ''.join(dewey_decimal)}
     json = simplejson.dumps(results)
     return HttpResponse(json, mimetype='application/json')
-        
-
-def old_lookup(request):
-    return render(request, 'books/lookup.html', {})
-
-
-def old_entry(request):
-    isbn = request.POST['isbn']
-
-    page = requests.get(''.join(['http://classify.oclc.org/classify2/ClassifyDemo?search-standnum-txt=', isbn]))
-    tree = html.fromstring(page.text)
-    if not tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()'):  # Oh dear god, please fix me
-        page = requests.get(''.join(['http://classify.oclc.org', ''.join(tree.xpath('//*[@id="results-table"]/tbody/tr[1]/td[1]/span[1]/a/@href'))]))
-        tree = html.fromstring(page.text)
-    title = tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()')
-    author = tree.xpath('//*[@id="display-Summary"]/dl/dd[2]/a[1]/text()')
-    ddc = tree.xpath('//*[@id="classSummaryData"]/tbody/tr[1]/td[2]/text()')
-
-    context = {'isbn': isbn,
-               'title': ''.join(title),  # Why are these lists?
-               'author': ''.join(author),
-               'ddc': ''.join(ddc)}
-
-    return render(request, 'books/entry.html', context)
-
-
-def save(request):
-    b = Book(isbn=request.POST.get('isbn', 0),
-             title=request.POST.get('title', ''),
-             author=request.POST.get('author', ''),
-             ddc=request.POST.get('ddc', ''))
-    b.save()
-    return redirect('/')
-
 
 def detail(request, isbn):
     book = get_object_or_404(Book, isbn=isbn)

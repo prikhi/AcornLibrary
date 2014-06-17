@@ -1,0 +1,14 @@
+div#spinner
+{
+    display: none;
+    width:150px;
+    height: 150px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    text-align:center;
+    margin-left: -50px;
+    margin-top: -100px;
+    z-index:2;
+    overflow: auto;
+}    

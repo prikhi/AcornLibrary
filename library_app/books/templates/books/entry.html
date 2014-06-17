@@ -4,9 +4,13 @@
 
 {% block content %}
 <script src="{{ STATIC_URL }}books/js/lookup.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/css/style.css">
 <form action="{% url 'books:entry' %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input id="get_info" type="button" value="Get Info"/>
 <input type="submit" value="Save" />
 </form>
+<div id="spinner">
+    <img src="{{ STATIC_URL}}books/images/loading.gif" alt="Loading..."/>
+</div>
 {% endblock %}
