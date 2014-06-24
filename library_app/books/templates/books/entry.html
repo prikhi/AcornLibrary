@@ -3,8 +3,10 @@
 {% block title %}Book Entry{% endblock %}
 
 {% block content %}
+<script src="{{ STATIC_URL }}books/js/selectize.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}books/js/lookup.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/css/style.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/css/selectize.css">
 <form action="{% url 'books:entry' %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input id="get_info" type="button" value="Get Info"/>

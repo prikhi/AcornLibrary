@@ -4,7 +4,14 @@ function lookup(isbn) {
         function(json) {
         if (json['success'] == true) { 
                 $("#id_title").val(json['title']);
-                $("#id_author").val(json['author']);
+                var selectize_authors = $("#id_authors")[0].selectize;
+                for (var i=0; i<json.authors.length; i++) {
+                    selectize_authors.addOption({
+                        text: json.authors[i],
+                        value: json.authors[i]
+                    });
+                    selectize_authors.addItem(json.authors[i])
+                }
                 $("#id_dewey_decimal").val(json['dewey_decimal']);
                 $('#spinner').fadeOut('fast');
         } else {
@@ -21,4 +28,15 @@ function addClickHandler() {
 
 $(document).ready(function() {
     addClickHandler();
+    $("#id_authors").selectize({
+					plugins: ['remove_button'],
+					delimiter: '%',
+				    persist: false,
+				    create: true /*function(input) {
+				        return {
+				            value: input,
+				            text: input
+				        }
+				    }*/
+				});
 });

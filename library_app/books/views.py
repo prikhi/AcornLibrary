@@ -33,12 +33,12 @@ def lookup(request):
             page = requests.get(''.join(['http://classify.oclc.org', ''.join(tree.xpath('//*[@id="results-table"]/tbody/tr[1]/td[1]/span[1]/a/@href'))]))
             tree = html.fromstring(page.text)
         title = tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()')
-        author = tree.xpath('//*[@id="display-Summary"]/dl/dd[2]/a[1]/text()')
+        authors = tree.xpath('//*[@id="display-Summary"]/dl/dd[2]/a[1]/text()')
         dewey_decimal = tree.xpath('//*[@id="classSummaryData"]/tbody/tr[1]/td[2]/text()')
         if title:
             results = {'success': True,
                        'title': ''.join(title),  # Why are these lists?
-                       'author': ''.join(author),
+                       'authors': ["test author 1", "test, author 2"],
                        'dewey_decimal': ''.join(dewey_decimal)}
     json = simplejson.dumps(results)
     return HttpResponse(json, mimetype='application/json')
