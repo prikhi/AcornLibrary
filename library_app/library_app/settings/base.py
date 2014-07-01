@@ -84,3 +84,7 @@ STATIC_URL = '/static/'
 SOUTH_MIGRATION_MODULES = {
     'taggit': 'taggit.south_migrations',
 }
+
+TAGGIT_TAGS_FROM_STRING = 'books.utils.tags_from_strings'
+
+TAGGIT_STRING_FROM_TAGS = 'books.utils.string_from_tags'
