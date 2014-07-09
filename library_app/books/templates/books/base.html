@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
     <script src="{{ STATIC_URL }}books/js/jquery-2.1.1.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/css/style.css">
     <title>{% block title %}Library App{% endblock %}</title>
 </head>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <body>
     <div id="content">

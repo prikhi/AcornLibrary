@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.utils import simplejson
+from django.contrib import messages
 
 from books.models import Book
 from books.models import BookForm
@@ -16,6 +17,7 @@ def entry(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, ''.join(['\"', form.cleaned_data['title'], '\"', ' was added successfully.']))
             form = BookForm()
     else:
         form = BookForm()
