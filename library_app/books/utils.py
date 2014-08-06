@@ -1,5 +1,6 @@
 import requests
-from lxml import html, etree
+from lxml import html, etree, objectify
+import urllib
 
 def tags_from_strings(tag_string):
     return [t.strip() for t in tag_string.split('%') if t.strip()]
@@ -9,21 +10,27 @@ def string_from_tags(tags):
     return '%'.join(t.name for t in tags)
     
 
-def new_oclc_scrape(request):
+def oclc_scrape(request):
     results = {'success': False}
     isbn = request.GET['isbn']
-    page = etree.parse(''.join(['http://classify.oclc.org/classify2/Classify?isbn=', isbn, '&summary=true']))
+    url = ''.join(['http://classify.oclc.org/classify2/Classify?isbn=', isbn, '&summary=true'])
+
+    root = objectify.fromstring(urllib.request.urlopen(url).read())
+    title = root.work.attrib['title']
+    authors = []
+    for author in root.authors.author:
+        authors.append(author.text)   
+    dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
     
-    title = page.findtext('orderBy')
     if True:
         results = {'success': True,
-                   'title': ''.join(title),  # Why are these lists?
-                   'authors': 'Authors',
-                   'dewey_decimal': '1.1'}
+                   'title': title, 
+                   'authors': authors,
+                   'dewey_decimal': dewey_decimal}
     return results  
 
 
-def oclc_scrape(request):
+def old_oclc_scrape(request):
     results = {'success': False}
     isbn = request.GET['isbn']
     page = requests.get(''.join(['http://classify.oclc.org/classify2/ClassifyDemo?search-standnum-txt=', isbn]))
