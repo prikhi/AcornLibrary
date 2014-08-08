@@ -1,6 +1,7 @@
 import requests
 from lxml import html, etree, objectify
 import urllib
+import json
 
 def tags_from_strings(tag_string):
     return [t.strip() for t in tag_string.split('%') if t.strip()]
@@ -9,6 +10,31 @@ def tags_from_strings(tag_string):
 def string_from_tags(tags):
     return '%'.join(t.name for t in tags)
     
+def get_book_info(request):
+    results = {'success': False}
+    
+    isbn = request.GET['isbn']
+    api_key = 'AIzaSyD8fIqUMR_jtZ9PxS9j9uqnuoD3RKx6fB8'
+    url = ('https://www.googleapis.com/books/v1/volumes?q=isbn:%s&key=%s') % (isbn, api_key)
+    response = urllib.request.urlopen(url)
+    str_response = response.readall().decode('utf-8')
+    data = json.loads(str_response)
+    title = data['items'][0]['volumeInfo']['title']
+    authors = []
+    if 'authors' in data['items'][0]['volumeInfo']:
+        for author in data['items'][0]['volumeInfo']['authors']:
+            authors.append(author)
+    
+    url = ('http://classify.oclc.org/classify2/Classify?isbn=%s&summary=true') % (isbn)
+    root = objectify.fromstring(urllib.request.urlopen(url).read())
+    dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
+    
+    if True:
+        results = {'success': True,
+                   'title': title, 
+                   'authors': authors,
+                   'dewey_decimal': dewey_decimal}
+    return results
 
 def oclc_scrape(request):
     results = {'success': False}

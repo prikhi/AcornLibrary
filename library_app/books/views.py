@@ -26,7 +26,7 @@ def entry(request):
 def lookup(request):
     results = {'success': False}
     if request.method == 'GET':
-        results = utils.oclc_scrape(request)
+        results = utils.get_book_info(request)
     json = simplejson.dumps(results)
     return HttpResponse(json, mimetype='application/json')
 
