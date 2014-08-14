@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'south',
     'books',
     'taggit',
+    'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -88,3 +89,11 @@ SOUTH_MIGRATION_MODULES = {
 TAGGIT_TAGS_FROM_STRING = 'books.utils.tags_from_strings'
 
 TAGGIT_STRING_FROM_TAGS = 'books.utils.string_from_tags'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
