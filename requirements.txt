@@ -1,6 +1,7 @@
 Django==1.6.5
 South==0.8.4
 Whoosh==2.6.0
+django-bootstrap3==4.11.0
 django-haystack==2.2.0
 django-taggit==0.12
 httplib2==0.9
