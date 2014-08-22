@@ -1,5 +1,7 @@
 {% extends "books/base.html" %}
-
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block title %}Book Entry{% endblock %}
 
 {% block content %}
@@ -7,10 +9,15 @@
 <script src="{{ STATIC_URL }}books/js/lookup.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/css/selectize.css">
 
-<form action="{% url 'books:entry' %}" method="post">{% csrf_token %}
-{{ form.as_p }}
+<form role="form" action="{% url 'books:entry' %}" method="post" class="form-vertical">{% csrf_token %}
+ <table>
+   {{ form.as_table }}
+</table>
 <input id="get_info" type="button" value="Get Info"/>
-<input type="submit" value="Save" />
+<input type="submit" value="Save" /> 
+
+
+
 </form>
 <div id="spinner">
     <img src="{{ STATIC_URL}}books/images/loading.gif" alt="Loading..."/>
