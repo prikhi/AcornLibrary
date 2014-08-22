@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, url, include
+from haystack.views import SearchView, search_view_factory
+from haystack.forms import SearchForm
 
 from books import views
 
@@ -8,5 +10,8 @@ urlpatterns = patterns('',
     url(r'^entry$', views.entry, name='entry'),
     url(r'^lookup/$', views.lookup, name='lookup'),
     url(r'^(?P<isbn>\d+)/$', views.detail, name='detail'),
-    url(r'^search/', include('haystack.urls'))
+    url(r'^search/', search_view_factory(
+        view_class=SearchView,
+        form_class=SearchForm
+    ), name='haystack_search')
 )
