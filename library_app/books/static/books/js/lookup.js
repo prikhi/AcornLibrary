@@ -12,6 +12,14 @@ function lookup(isbn) {
                     });
                     selectize_authors.addItem(json.authors[i])
                 }
+                var selectize_subjects = $("#id_subjects")[0].selectize;
+                for (var i=0; i<json.subjects.length; i++) {
+                    selectize_subjects.addOption({
+                        text: json.subjects[i],
+                        value: json.subjects[i]
+                    });
+                    selectize_subjects.addItem(json.subjects[i])
+                }
                 $("#id_dewey_decimal").val(json['dewey_decimal']);
                 $('#spinner').fadeOut('fast');
         } else {
@@ -38,5 +46,12 @@ $(document).ready(function() {
 				            text: input
 				        }
 				    }*/
+				});
+				
+	$("#id_subjects").selectize({
+					plugins: ['remove_button'],
+					delimiter: '%',
+				    persist: false,
+				    create: true 
 				});
 });

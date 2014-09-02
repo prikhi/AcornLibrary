@@ -6,6 +6,7 @@ from books.models import Book
 class BookIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     authors = indexes.MultiValueField()
+    subjects = indexes.MultiValueField()
 
     def get_model(self):
         return Book
@@ -15,4 +16,4 @@ class BookIndex(indexes.SearchIndex, indexes.Indexable):
         return self.get_model().objects  #.filter(pub_date__lte=datetime.datetime.now())
         
     def prepare_tags(self, obj):
-        return [author.name for author in obj.authors.all()]
+        return [author.name for author in obj.authors.all()] + [subject.name for subject in obj.subjects.all()]

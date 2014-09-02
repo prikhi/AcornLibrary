@@ -25,14 +25,16 @@ def get_book_info(request):
         for author in data['items'][0]['volumeInfo']['authors']:
             authors.append(author)
     
-    url = ('http://classify.oclc.org/classify2/Classify?isbn=%s&summary=true') % (isbn)
+    url = ('http://classify.oclc.org/classify2/Classify?isbn=%s') % (isbn)
     root = objectify.fromstring(urllib.request.urlopen(url).read())
     dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
+    subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
     
     if True:
         results = {'success': True,
                    'title': title, 
                    'authors': authors,
+                   'subjects': subjects,
                    'dewey_decimal': dewey_decimal}
     return results
 
