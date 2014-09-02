@@ -10,7 +10,7 @@ from books import utils
 # Create your views here.
 
 
-def entry(request):
+def entry(request, book=None):
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
@@ -19,6 +19,8 @@ def entry(request):
             form = BookForm()
     else:
         form = BookForm()
+        if book:
+            form = BookForm(instance = Book.objects.get(pk=book))
     return render(request, 'books/entry.html', {
         'form': form,
     })
