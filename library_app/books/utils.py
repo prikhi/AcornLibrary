@@ -20,6 +20,7 @@ def get_book_info(request):
     str_response = response.readall().decode('utf-8')
     data = json.loads(str_response)
     title = data['items'][0]['volumeInfo']['title']
+    description = data['items'][0]['volumeInfo']['description']
     authors = []
     if 'authors' in data['items'][0]['volumeInfo']:
         for author in data['items'][0]['volumeInfo']['authors']:
@@ -35,7 +36,8 @@ def get_book_info(request):
                    'title': title, 
                    'authors': authors,
                    'subjects': subjects,
-                   'dewey_decimal': dewey_decimal}
+                   'dewey_decimal': dewey_decimal,
+                   'description': description}
     return results
 
 def oclc_scrape(request):

@@ -21,6 +21,7 @@ function lookup(isbn) {
                     selectize_subjects.addItem(json.subjects[i])
                 }
                 $("#id_dewey_decimal").val(json['dewey_decimal']);
+                $("#id_description").val(json['description']);
                 $('#spinner').fadeOut('fast');
         } else {
             $('#spinner').fadeOut('fast', function(){

@@ -29,11 +29,11 @@ class Book(models.Model):
 class BookForm(ModelForm):
     class Meta:
         model = Book
-        fields = ['isbn', 'title', 'authors', 'subjects', 'dewey_decimal', 'dewey_description', 'location', 'owner']
+        fields = ['isbn', 'title', 'authors', 'subjects', 'dewey_decimal', 'description', 'location', 'owner']
         labels = {
             'isbn': 'ISBN',
             'dewey_decimal': 'Dewey Decimal #',
-            'dewey_description': 'Dewey Description',
+            'description': 'Description',
             'authors': 'Author(s)',
             'subjects': 'Subject(s)',
         }
