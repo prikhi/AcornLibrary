@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'books',
     'taggit',
     'haystack',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
