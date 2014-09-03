@@ -1,5 +1,10 @@
-{% if book %}
-    <p>The title of the book is "{{book.title}}"</p>
-{% else %}
-    <p>There is no book with that ISBN.</p>
-{% endif %}
+{% extends "books/base.html" %}
+{% block content %}
+<div style="padding:20px">
+<h2>Welcome to the Acorn Library!</h2><p>
+
+Here you will find an (inevitably incomplete) listing of the books that are available on the farm.<br>
+See what we have by using the browsing functions or by searching for something specific.<p>
+Have books that you would like to add to the system? Use the link in the navigation bar to get started.
+</div>
+{% endblock %}

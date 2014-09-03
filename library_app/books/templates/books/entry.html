@@ -9,6 +9,12 @@
 <script src="{{ STATIC_URL }}books/js/lookup.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/css/selectize.css">
 
+<div style="padding:20px">
+<h2>Book Entry Form</h2>
+
+<div style="width:40%;">
+<b>Don't panic!</b> it's easier than it looks! Generally, all you will need to do is input the ISBN number and press the "Get Info" button. This should automagically pull the rest of the information and populate the form for you. After making sure that the information is correct, and filling out the owner and location info if you wish, you can hit the save button to input the book into the system. If you have a lot of books to get through, you can even use the bar code scanner in the office to scan in the ISBN numbers.<p></div>
+
 <form role="form" action="{% url 'books:entry' %}" method="post" class="form-vertical">{% csrf_token %}
  <table>
    {{ form.as_table }}
@@ -19,6 +25,7 @@
 
 
 </form>
+</div>
 <div id="spinner">
     <img src="{{ STATIC_URL}}books/images/loading.gif" alt="Loading..."/>
 </div>
