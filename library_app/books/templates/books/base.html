@@ -10,7 +10,7 @@
     <title>{% block title %}Library App{% endblock %}</title>
 </head>
 
-{% bootstrap_messages %}
+
 
 <body>
 {% bootstrap_javascript %}
@@ -67,6 +67,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+{% bootstrap_messages %}
 
     <div id="content">
         {% block content %}{% endblock %}
