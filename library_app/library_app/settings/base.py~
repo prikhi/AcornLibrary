@@ -20,9 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'r13ql%y9#y3!%a@w-3*yhu+^=fv=pxdroj9w^mz@laxs)(=@-m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +35,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'books',
+    'taggit',
+    'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,3 +81,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SOUTH_MIGRATION_MODULES = {
+    'taggit': 'taggit.south_migrations',
+}
+
+TAGGIT_TAGS_FROM_STRING = 'books.utils.tags_from_strings'
+
+TAGGIT_STRING_FROM_TAGS = 'books.utils.string_from_tags'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
