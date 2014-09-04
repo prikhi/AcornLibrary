@@ -7,6 +7,7 @@ class BookIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     authors = indexes.MultiValueField()
     subjects = indexes.MultiValueField()
+    description = indexes.CharField()
 
     def get_model(self):
         return Book
