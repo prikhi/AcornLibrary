@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^entry$', views.entry, name='entry'),
     url(r'^entry/(\d+)$', views.entry, name='edit'),
     url(r'^lookup/$', views.lookup, name='lookup'),
+    url(r'^subjects$', views.subjects, name='subjects'),
     url(r'^(?P<isbn>\d+)/$', views.detail, name='detail'),
     url(r'^search/', search_view_factory(
         view_class=SearchView,

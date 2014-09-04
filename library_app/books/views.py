@@ -36,3 +36,9 @@ def detail(request, isbn):
     book = get_object_or_404(Book, isbn=isbn)
     context = {'book': book, }
     return render(request, 'books/index.html', context)
+    
+    
+def subjects(request):
+    subjects = Book.subjects.all().order_by('name')
+    context = {'subjects': subjects}
+    return render(request, 'books/subjects.html', context)
