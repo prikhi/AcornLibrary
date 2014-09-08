@@ -14,7 +14,7 @@ from books import utils
 class CreateBookView(SuccessMessageMixin, CreateView):
 
     model = Book
-    form = BookForm
+    form_class = BookForm
     template_name = 'books/entry.html'
     success_message = "%(title)s was added successfully"
     
@@ -33,6 +33,7 @@ class CreateBookView(SuccessMessageMixin, CreateView):
 class UpdateBookView(SuccessMessageMixin, UpdateView):
     
     model = Book
+    form_class = BookForm
     template_name = 'books/entry.html'
     success_message = "%(title)s was updated successfully"
     
