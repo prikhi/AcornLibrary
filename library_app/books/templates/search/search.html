@@ -1,7 +1,10 @@
 {% extends 'books/base.html' %}
 
 {% block content %}
+<script src="{{ STATIC_URL }}books/js/jExpand.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}books/js/search.js" type="text/javascript" charset="utf-8"></script>
 
+<div style="padding:20px">
     <form method="get" action=".">
        <!-- <table>
             {{ form.as_table }}
@@ -15,10 +18,11 @@
 
         {% if query %}
             <h3>Results</h3>
+            Click on a result to see more information about that book.<br><br>
 
-        <table border="1" >
+        <table id="results" border="1" width="100%">
             <tr>
-                <th>Title</th>
+                <th style="width:30%">Title</th>
                 <th>Author(s)</th>
             </tr>
           
@@ -27,9 +31,18 @@
                 <td>{{result.object.title}}</td>
                 <td>
                 {% for author in result.object.authors.all %}    
-                    "{{ author.name }}"&nbsp;
+                    {{ author.name }} {% if not forloop.last %},&nbsp;{% endif %}
                 {% endfor %}
                 
+             </tr>
+             <tr>
+                <td colspan="2">
+                Subjects:
+                {% for subject in result.object.subjects.all %}
+                    {{ subject.name }} {% if not forloop.last %},&nbsp;{% endif %}
+                {% endfor %}<br>
+                Description: {{ result.object.description }}                
+                </td>
              </tr>
             {% empty %}
                 <p>No results found.</p>
@@ -47,4 +60,5 @@
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
     </form>
+</div>
 {% endblock %}
