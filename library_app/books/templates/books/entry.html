@@ -10,12 +10,18 @@
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/css/selectize.css">
 
 <div style="padding:20px">
+{% if create %}
 <h2>Book Entry Form</h2>
+{% else %}
+<h2>Book Edit Form</h2>
+{% endif %}
 
+{% if create %}
 <div style="width:40%;">
 <b>Don't panic!</b> it's easier than it looks! Generally, all you will need to do is input the ISBN number and press the "Get Info" button. This should automagically pull the rest of the information and populate the form for you. After making sure that the information is correct, and filling out the owner and location info, you can hit the save button to input the book into the system. If you have a lot of books to get through, you can even use the bar code scanner in the office to scan in the ISBN numbers.<p></div>
+{% endif %}
 
-<form role="form" action="{% url 'books:entry' %}" method="post" class="form-vertical">{% csrf_token %}
+<form role="form" action="{{ action }}" method="post">{% csrf_token %}
  <table>
    {{ form.as_table }}
 </table>
