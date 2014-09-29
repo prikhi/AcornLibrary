@@ -38,10 +38,14 @@
              <tr>
                 <!--<td colspan="2">-->
                 <td valign="top">
-                Subjects:
+                <p>Subjects:
                 {% for subject in result.object.subjects.all %}
                     {{ subject.name }} {% if not forloop.last %},&nbsp;{% endif %}
-                {% endfor %}<p>
+                {% endfor %} 
+                <p>
+                Dewey Decimal: {{ result.object.dewey_decimal }}<p>
+                Location: {{ result.object.location }}<p>
+                Owner: {{ result.object.owner }} <p>
                 <a href="/entry/{{ result.object.pk }}">Edit this book's info</a>
                 </td>
                 <td valign="top">
