@@ -29,4 +29,5 @@ td {
     padding: 5px;
 }
 
-tr#odd { border-top: hidden } 
+.odd { border-bottom: none }
+.even { border-top: hidden }
