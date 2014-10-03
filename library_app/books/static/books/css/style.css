@@ -28,3 +28,5 @@ th {
 td {
     padding: 5px;
 }
+
+tr#odd { border-top: hidden } 
