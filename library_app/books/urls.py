@@ -16,5 +16,7 @@ urlpatterns = patterns('',
     url(r'^search/', search_view_factory(
         view_class=SearchView,
         form_class=SearchForm
-    ), name='haystack_search')
+    ), name='haystack_search'),
+    (r'^categories/$', 'books.views.show_categories'),
+
 )

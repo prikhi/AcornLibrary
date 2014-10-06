@@ -1,13 +1,15 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.utils import simplejson
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.core.urlresolvers import reverse
+from django.template import RequestContext
 
 from books.models import Book
 from books.models import BookForm
+from books.models import Category
 from books import utils
 
 # Create your views here.
@@ -80,3 +82,8 @@ def subjects(request):
     subjects = Book.subjects.all().order_by('name')
     context = {'subjects': subjects}
     return render(request, 'books/subjects.html', context)
+    
+def show_categories(request):
+    return render_to_response("books/categories.html",
+                          {'nodes':Category.objects.all()},
+                          context_instance=RequestContext(request))

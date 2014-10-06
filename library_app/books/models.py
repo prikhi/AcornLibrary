@@ -3,6 +3,7 @@ from django.forms import ModelForm
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
+from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
 
@@ -37,3 +38,12 @@ class BookForm(ModelForm):
             'authors': 'Author(s)',
             'subjects': 'Subject(s)',
         }
+        
+        
+class Category(MPTTModel):
+    number = models.CharField(max_length=3)
+    title = models.CharField(max_length=100)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+
+    class MPTTMeta:
+        order_insertion_by = ['number']
