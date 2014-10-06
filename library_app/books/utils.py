@@ -65,7 +65,6 @@ def old_oclc_scrape(request):
     isbn = request.GET['isbn']
     page = requests.get(''.join(['http://classify.oclc.org/classify2/ClassifyDemo?search-standnum-txt=', isbn]))
     tree = html.fromstring(page.text)
-    self.stdout.write(tree.to_string(root))
     if not tree.xpath('//*[@id="display-Summary"]/dl/dd[1]/text()'):  # Oh dear god, please fix me
         page = requests.get(''.join(['http://classify.oclc.org', ''.join(tree.xpath('//*[@id="results-table"]/tbody/tr[1]/td[1]/span[1]/a/@href'))]))
         tree = html.fromstring(page.text)

@@ -6,6 +6,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.core.paginator import Paginator, InvalidPage
+
+from haystack.query import SearchQuerySet
 
 from books.models import Book
 from books.models import BookForm
@@ -82,6 +85,22 @@ def subjects(request):
     subjects = Book.subjects.all().order_by('name')
     context = {'subjects': subjects}
     return render(request, 'books/subjects.html', context)
+    
+def latest(request):
+    results = Book.objects.order_by('-added_on')
+    #results = SearchQuerySet().all().order_by('-added_on')
+    paginator = Paginator(results, 10)
+    try:
+        page = paginator.page(int(request.GET.get('page', 1)))
+    except InvalidPage:
+        raise Http404("No such page of results!")
+    
+    context = {
+        'page': page,
+        'paginator': paginator,
+    }
+    
+    return render_to_response('search/search.html', context, context_instance=RequestContext(request))
     
 def show_categories(request):
     return render_to_response("books/categories.html",

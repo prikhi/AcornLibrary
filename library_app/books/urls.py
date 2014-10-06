@@ -17,6 +17,6 @@ urlpatterns = patterns('',
         view_class=SearchView,
         form_class=SearchForm
     ), name='haystack_search'),
-    (r'^categories/$', 'books.views.show_categories'),
-
+    url(r'^categories/$', 'books.views.show_categories'),
+    url(r'^latest/$', views.latest, name='latest'),
 )

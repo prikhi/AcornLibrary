@@ -25,6 +25,9 @@ class Book(models.Model):
 
     def __unicode__(self):
         return self.title
+        
+    def object(self):
+        return self
 
 
 class BookForm(ModelForm):
