@@ -19,5 +19,5 @@ urlpatterns = patterns('',
     ), name='haystack_search'),
     url(r'^latest/$', views.latest, name='latest'),
     url(r'^dewey$', views.dewey, name='dewey'),
-    url(r'^dewey/(?P<ddc>\d+)$', views.dewey_category, name='dewey_category'),
+    url(r'^dewey/(?P<ddc>\d+)$', views.dewey_results, name='dewey_results'),
 )

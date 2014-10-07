@@ -108,7 +108,7 @@ def dewey(request):
                           context_instance=RequestContext(request))
                           
 
-def dewey_category(request, ddc):
+def dewey_results(request, ddc):
     results = Book.objects.filter(dewey_decimal__startswith=ddc)
     #results = SearchQuerySet().all().order_by('-added_on')
     paginator = Paginator(results, 15)
