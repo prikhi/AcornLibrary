@@ -30,4 +30,6 @@ td {
 }
 
 .odd { border-bottom: none }
+.even { border-top: hidden }
 
+.jstree-themeicon { visibility: hidden }

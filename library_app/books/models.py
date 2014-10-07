@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from django.db.models import F
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
@@ -28,6 +29,18 @@ class Book(models.Model):
         
     def object(self):
         return self
+        
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        if is_new:
+            dewey_num = self.dewey_decimal[:3]
+            category = Category.objects.filter(number=dewey_num, is_leaf=True)[:1].get()
+            while category:
+                category.book_count = F('book_count') + 1
+                category.save()
+                category = category.parent
+        # TODO: handle case when book is being updated
+        super(Book, self).save(*args, **kwargs)
 
 
 class BookForm(ModelForm):
@@ -45,8 +58,11 @@ class BookForm(ModelForm):
         
 class Category(MPTTModel):
     number = models.CharField(max_length=3)
+    link_number = models.CharField(max_length=3)
     title = models.CharField(max_length=100)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    book_count = models.IntegerField(default=0, blank=False, null=False)
+    is_leaf = models.BooleanField(default=False)
 
     class MPTTMeta:
         order_insertion_by = ['number']

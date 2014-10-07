@@ -17,6 +17,7 @@ urlpatterns = patterns('',
         view_class=SearchView,
         form_class=SearchForm
     ), name='haystack_search'),
-    url(r'^categories/$', 'books.views.show_categories'),
     url(r'^latest/$', views.latest, name='latest'),
+    url(r'^dewey$', views.dewey, name='dewey'),
+    url(r'^dewey/(?P<ddc>\d+)$', views.dewey_category, name='dewey_category'),
 )

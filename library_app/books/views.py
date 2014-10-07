@@ -89,7 +89,7 @@ def subjects(request):
 def latest(request):
     results = Book.objects.order_by('-added_on')
     #results = SearchQuerySet().all().order_by('-added_on')
-    paginator = Paginator(results, 10)
+    paginator = Paginator(results, 15)
     try:
         page = paginator.page(int(request.GET.get('page', 1)))
     except InvalidPage:
@@ -102,7 +102,24 @@ def latest(request):
     
     return render_to_response('search/search.html', context, context_instance=RequestContext(request))
     
-def show_categories(request):
-    return render_to_response("books/categories.html",
+def dewey(request):
+    return render_to_response("books/dewey.html",
                           {'nodes':Category.objects.all()},
                           context_instance=RequestContext(request))
+                          
+
+def dewey_category(request, ddc):
+    results = Book.objects.filter(dewey_decimal__startswith=ddc)
+    #results = SearchQuerySet().all().order_by('-added_on')
+    paginator = Paginator(results, 15)
+    try:
+        page = paginator.page(int(request.GET.get('page', 1)))
+    except InvalidPage:
+        raise Http404("No such page of results!")
+    
+    context = {
+        'page': page,
+        'paginator': paginator,
+    }
+    
+    return render_to_response('search/search.html', context, context_instance=RequestContext(request))
