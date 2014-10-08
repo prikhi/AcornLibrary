@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from django.db.models import F
+from django import forms
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
@@ -69,6 +70,10 @@ class BookForm(ModelForm):
             'description': 'Description',
             'authors': 'Author(s)',
             'subjects': 'Subject(s)',
+        }
+        widgets = {
+            'description': forms.Textarea(attrs={'rows':7, 'cols':70}),
+            'title': forms.TextInput(attrs={'size':'70'}),
         }
         
         
