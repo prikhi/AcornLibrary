@@ -1,0 +1,31 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<script src="{{ STATIC_URL }}books/js/jquery-2.1.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}books/js/jstree/jstree.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}books/js/dewey.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}books/js/jstree/themes/default/style.min.css">
+
+<div style="padding:20px">
+<h2>Browse by Dewey Decimal</h2>
+Click on the arrows to expand a category. Click on the category title to see all the books in that category.<br>
+The number is parenthesis indicates how many books there are in that category.<p>
+
+{% load mptt_tags %}
+<div id="dewey_tree">
+<ul>
+    {% recursetree nodes %}
+        <li rel="default">
+            <a href="/dewey/{{node.link_number}}">{{node.number}} {{ node.title }} ({{node.book_count}})</a>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+</div>
+</div>
+{% endblock %}
