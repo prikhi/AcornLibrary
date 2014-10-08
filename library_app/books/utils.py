@@ -45,6 +45,8 @@ def get_book_info(request):
         response_code = root.response.attrib['code']
     if response_code == '0' or response_code == '2':
         dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
+        if dewey_decimal=='FIC':
+            dewey_decimal = root.recommendations.ddc.mostPopular[1].attrib['nsfa']
         subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
         if not authors:
             authors = []
