@@ -23,6 +23,8 @@ def get_book_info(request):
     title = data['items'][0]['volumeInfo']['title']
     #description = data['items'][0]['volumeInfo']['description']
     description = data['items'][0]['volumeInfo'].get('description', None)
+    if not description:
+        description = data['items'][0]['searchInfo'].get('textSnippet', None)
     authors = []
     if 'authors' in data['items'][0]['volumeInfo']:
         for author in data['items'][0]['volumeInfo']['authors']:
@@ -33,7 +35,6 @@ def get_book_info(request):
     dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
     subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
     if not authors:
-        #authors = [ el.text for el in root.authors.iterchildren()]
         for el in root.authors.iterchildren():
             text = el.text
             digit = re.search('\d', text)
