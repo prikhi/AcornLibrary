@@ -60,6 +60,7 @@ $(document).ready(function() {
 				});
 				
 	$("#get_info").appendTo($("#id_isbn").parent());
+	$("#id_isbn").focus();
 	
 	$("#id_isbn").keypress(function(event){
     if(event.which == 13){

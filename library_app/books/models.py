@@ -23,7 +23,7 @@ class Book(models.Model):
     description = models.TextField(blank=True)
     location = models.CharField(max_length=200, blank=True)
     owner = models.CharField(max_length=200, blank=True)
-    added_on = models.DateField(auto_now_add=True)
+    added_on = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.title
