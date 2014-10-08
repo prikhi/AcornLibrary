@@ -12,7 +12,7 @@ def string_from_tags(tags):
     return '%'.join(t.name for t in tags)
     
 def get_book_info(request):
-    success=True       
+    success=True     
     isbn = request.GET['isbn']
     api_key = 'AIzaSyD8fIqUMR_jtZ9PxS9j9uqnuoD3RKx6fB8'
     url = ('https://www.googleapis.com/books/v1/volumes?q=isbn:%s&key=%s') % (isbn, api_key)
@@ -20,8 +20,7 @@ def get_book_info(request):
     str_response = response.readall().decode('utf-8')
     data = json.loads(str_response)
     if data['totalItems'] != 0:
-        title = data['items'][0]['volumeInfo']['title']
-        #description = data['items'][0]['volumeInfo']['description']
+        title = data['items'][0]['volumeInfo'].get('title', None)
         description = data['items'][0]['volumeInfo'].get('description', None)
         if not description:
             if 'searchInfo' in data['items'][0]:
@@ -31,15 +30,24 @@ def get_book_info(request):
             for author in data['items'][0]['volumeInfo']['authors']:
                 authors.append(author)
     else:
+        title=''
+        authors=[]
+        description=''
         success = False
     
     url = ('http://classify.oclc.org/classify2/Classify?isbn=%s') % (isbn)
     root = objectify.fromstring(urllib.request.urlopen(url).read())
     response_code = root.response.attrib['code']
+    if response_code == '4':
+        owi = root.works.work[0].attrib['owi']
+        url = ('http://classify.oclc.org/classify2/Classify?owi=%s') % (owi)
+        root = objectify.fromstring(urllib.request.urlopen(url).read())
+        response_code = root.response.attrib['code']
     if response_code == '0' or response_code == '2':
         dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
         subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
         if not authors:
+            authors = []
             for el in root.authors.iterchildren():
                 text = el.text
                 digit = re.search('\d', text)
@@ -48,7 +56,15 @@ def get_book_info(request):
                 comma = text.find(',')
                 if comma != -1:
                     text = ''.join([text[comma+2:], ' ', text[:comma]])
+                comma = text.find(',')
+                if comma != -1:
+                    text = ''.join([text[:comma], '', text[comma+1:]])
                 authors.append(text)
+        if not title:
+            title = root.work.attrib['title']
+        if not description:
+            description=''
+        success = True
     else:
         success = False
     
