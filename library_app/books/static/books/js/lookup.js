@@ -30,13 +30,16 @@ function lookup(isbn) {
         }
         
     });
+    $("#submit").focus();
 }
+
 function addClickHandler() {
     $("#get_info").click(function(){ lookup($("#id_isbn").val()) });
 }
 
 $(document).ready(function() {
     addClickHandler();
+    
     $("#id_authors").selectize({
 					plugins: ['remove_button'],
 					delimiter: '%',
@@ -55,4 +58,13 @@ $(document).ready(function() {
 				    persist: false,
 				    create: true 
 				});
+				
+	$("#get_info").appendTo($("#id_isbn").parent());
+	
+	$("#id_isbn").keypress(function(event){
+    if(event.which == 13){
+        event.preventDefault();
+        $("#get_info").click();
+    }
+});
 });
