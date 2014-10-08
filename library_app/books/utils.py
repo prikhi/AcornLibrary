@@ -20,38 +20,46 @@ def get_book_info(request):
     response = urllib.request.urlopen(url)
     str_response = response.readall().decode('utf-8')
     data = json.loads(str_response)
-    title = data['items'][0]['volumeInfo']['title']
-    #description = data['items'][0]['volumeInfo']['description']
-    description = data['items'][0]['volumeInfo'].get('description', None)
-    if not description:
-        description = data['items'][0]['searchInfo'].get('textSnippet', None)
-    authors = []
-    if 'authors' in data['items'][0]['volumeInfo']:
-        for author in data['items'][0]['volumeInfo']['authors']:
-            authors.append(author)
+    if data['totalItems'] != 0:
+        title = data['items'][0]['volumeInfo']['title']
+        #description = data['items'][0]['volumeInfo']['description']
+        description = data['items'][0]['volumeInfo'].get('description', None)
+        if not description:
+            description = data['items'][0]['searchInfo'].get('textSnippet', None)
+        authors = []
+        if 'authors' in data['items'][0]['volumeInfo']:
+            for author in data['items'][0]['volumeInfo']['authors']:
+                authors.append(author)
+    else:
+        success = False
     
     url = ('http://classify.oclc.org/classify2/Classify?isbn=%s') % (isbn)
     root = objectify.fromstring(urllib.request.urlopen(url).read())
-    dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
-    subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
-    if not authors:
-        for el in root.authors.iterchildren():
-            text = el.text
-            digit = re.search('\d', text)
-            if digit:
-                text = text[:digit.start()-1]
-            comma = text.find(',')
-            if comma != -1:
-                text = ''.join([text[comma+2:], ' ', text[:comma]])
-            authors.append(text)
+    if root.response.attrib['code'] == '0':
+        dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
+        subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
+        if not authors:
+            for el in root.authors.iterchildren():
+                text = el.text
+                digit = re.search('\d', text)
+                if digit:
+                    text = text[:digit.start()-1]
+                comma = text.find(',')
+                if comma != -1:
+                    text = ''.join([text[comma+2:], ' ', text[:comma]])
+                authors.append(text)
+    else:
+        success = False
     
-    if True:
+    if success==True:
         results = {'success': True,
                    'title': title, 
                    'authors': authors,
                    'subjects': subjects,
                    'dewey_decimal': dewey_decimal,
                    'description': description}
+    else:
+        results = {'success': False}
     return results
 
 def oclc_scrape(request):
