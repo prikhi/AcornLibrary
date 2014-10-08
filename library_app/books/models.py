@@ -31,6 +31,7 @@ class Book(models.Model):
         return self
         
     def save(self, *args, **kwargs):
+    # TODO: This could probably be better handled by having an explicit relationship between categories and books. Need to uhderstand the capabilities of MPTT better.
         is_new = self.pk is None
         if is_new:
             dewey_num = self.dewey_decimal[:3]
@@ -39,7 +40,22 @@ class Book(models.Model):
                 category.book_count = F('book_count') + 1
                 category.save()
                 category = category.parent
-        # TODO: handle case when book is being updated
+        else:
+            new_dewey_num = self.dewey_decimal[:3]
+            old_object = Book.objects.filter(pk=self.pk)[:1].get()
+            old_dewey_num = old_object.dewey_decimal[:3]
+            if old_dewey_num != new_dewey_num:
+                category = Category.objects.filter(number=old_dewey_num, is_leaf=True)[:1].get()
+                while category:
+                    category.book_count = F('book_count') - 1
+                    category.save()
+                    category = category.parent
+                category = Category.objects.filter(number=new_dewey_num, is_leaf=True)[:1].get()
+                while category:
+                    category.book_count = F('book_count') + 1
+                    category.save()
+                    category = category.parent
+            
         super(Book, self).save(*args, **kwargs)
 
 
