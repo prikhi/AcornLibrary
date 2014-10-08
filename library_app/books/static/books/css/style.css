@@ -32,4 +32,4 @@ td {
 .odd { border-bottom: none }
 .even { border-top: hidden }
 
-.jstree-themeicon { display: none }
+.jstree-themeicon { display: none !important; }

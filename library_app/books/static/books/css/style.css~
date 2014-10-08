@@ -32,4 +32,5 @@ td {
 .odd { border-bottom: none }
 .even { border-top: hidden }
 
-.jstree-themeicon { visibility: hidden }
+.jstree-themeicon { display: none !important; }
+.jstree li a ins { display:none !important; } 
