@@ -12,8 +12,7 @@ def string_from_tags(tags):
     return '%'.join(t.name for t in tags)
     
 def get_book_info(request):
-    results = {'success': False}
-    
+    success=True       
     isbn = request.GET['isbn']
     api_key = 'AIzaSyD8fIqUMR_jtZ9PxS9j9uqnuoD3RKx6fB8'
     url = ('https://www.googleapis.com/books/v1/volumes?q=isbn:%s&key=%s') % (isbn, api_key)
@@ -25,7 +24,8 @@ def get_book_info(request):
         #description = data['items'][0]['volumeInfo']['description']
         description = data['items'][0]['volumeInfo'].get('description', None)
         if not description:
-            description = data['items'][0]['searchInfo'].get('textSnippet', None)
+            if 'searchInfo' in data['items'][0]:
+                description = data['items'][0]['searchInfo'].get('textSnippet', None)
         authors = []
         if 'authors' in data['items'][0]['volumeInfo']:
             for author in data['items'][0]['volumeInfo']['authors']:
@@ -35,7 +35,7 @@ def get_book_info(request):
     
     url = ('http://classify.oclc.org/classify2/Classify?isbn=%s') % (isbn)
     root = objectify.fromstring(urllib.request.urlopen(url).read())
-    if root.response.attrib['code'] == '0':
+    if root.response.attrib['code'] != '101':
         dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
         subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
         if not authors:
