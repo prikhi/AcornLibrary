@@ -2,6 +2,7 @@ import requests
 from lxml import html, etree, objectify
 import urllib
 import json
+import re
 
 def tags_from_strings(tag_string):
     return [t.strip() for t in tag_string.split('%') if t.strip()]
@@ -35,9 +36,12 @@ def get_book_info(request):
         #authors = [ el.text for el in root.authors.iterchildren()]
         for el in root.authors.iterchildren():
             text = el.text
+            digit = re.search('\d', text)
+            if digit:
+                text = text[:digit.start()-1]
             comma = text.find(',')
             if comma != -1:
-                text = ''.join([text[comma+2:], text[:comma]])
+                text = ''.join([text[comma+2:], ' ', text[:comma]])
             authors.append(text)
     
     if True:
