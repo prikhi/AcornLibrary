@@ -35,7 +35,8 @@ def get_book_info(request):
     
     url = ('http://classify.oclc.org/classify2/Classify?isbn=%s') % (isbn)
     root = objectify.fromstring(urllib.request.urlopen(url).read())
-    if root.response.attrib['code'] != '101':
+    response_code = root.response.attrib['code']
+    if response_code == '0' or response_code == '2':
         dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
         subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
         if not authors:
