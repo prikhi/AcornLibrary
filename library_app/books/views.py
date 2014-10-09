@@ -85,6 +85,24 @@ def subjects(request):
     subjects = Book.subjects.all().order_by('name')
     context = {'subjects': subjects}
     return render(request, 'books/subjects.html', context)
+
+
+def subject_results(request, subject):
+    print(subject)
+    results = Book.objects.filter(subjects__name__in=[subject])
+    paginator = Paginator(results, 15)
+    try:
+        page = paginator.page(int(request.GET.get('page', 1)))
+    except InvalidPage:
+        raise Http404("No such page of results!")
+    
+    context = {
+        'page': page,
+        'paginator': paginator,
+    }
+    
+    return render_to_response('search/search.html', context, context_instance=RequestContext(request))
+
     
 def latest(request):
     results = Book.objects.order_by('-added_on')
