@@ -13,7 +13,9 @@ from haystack.query import SearchQuerySet
 from books.models import Book
 from books.models import BookForm
 from books.models import Category
+from books.models import TaggedSubject
 from books import utils
+
 
 # Create your views here.
 class CreateBookView(SuccessMessageMixin, CreateView):
@@ -27,7 +29,7 @@ class CreateBookView(SuccessMessageMixin, CreateView):
         return reverse('books:entry')
         
     def get_context_data(self, **kwargs):
-    
+        
         context = super(CreateBookView, self).get_context_data(**kwargs)
         context['action'] = reverse('books:entry')
         context['create'] = True
@@ -53,20 +55,21 @@ class UpdateBookView(SuccessMessageMixin, UpdateView):
         return context
 
 
-def entry(request, book=None):
-    if request.method == 'POST':
-        form = BookForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, ''.join(['\"', form.cleaned_data['title'], '\"', ' was added successfully.']))
-            form = BookForm()
-    else:
-        form = BookForm()
-        if book:
-            form = BookForm(instance = Book.objects.get(pk=book))
-    return render(request, 'books/entry.html', {
-        'form': form,
-    })
+#def entry(request, book=None):
+#    if request.method == 'POST':
+#        form = BookForm(request.POST)
+#        if form.is_valid():
+#            import pdb; pdb.set_trace()
+#            form.save()
+#            messages.success(request, ''.join(['\"', form.cleaned_data['title'], '\"', ' was added successfully.']))
+#            form = BookForm()
+#    else:
+#        form = BookForm()
+#        if book:
+#            form = BookForm(instance = Book.objects.get(pk=book))
+#    return render(request, 'books/entry.html', {
+#        'form': form,
+#    })
 
 def lookup(request):
     results = {'success': False}
@@ -75,20 +78,21 @@ def lookup(request):
     json = simplejson.dumps(results)
     return HttpResponse(json, mimetype='application/json')
 
-def detail(request, isbn):
-    book = get_object_or_404(Book, isbn=isbn)
-    context = {'book': book, }
-    return render(request, 'books/index.html', context)
+#def detail(request, isbn):
+#    book = get_object_or_404(Book, isbn=isbn)
+#    context = {'book': book, }
+#    return render(request, 'books/index.html', context)
     
     
 def subjects(request):
     subjects = Book.subjects.all().order_by('name')
+    #subjects = TaggedSubject.objects.filter(book__dewey_decimal__startswith='940')
     context = {'subjects': subjects}
     return render(request, 'books/subjects.html', context)
 
 
 def subject_results(request, subject):
-    print(subject)
+    #print(subject)
     results = Book.objects.filter(subjects__name__in=[subject])
     paginator = Paginator(results, 15)
     try:
@@ -106,7 +110,6 @@ def subject_results(request, subject):
     
 def latest(request):
     results = Book.objects.order_by('-added_on')
-    #results = SearchQuerySet().all().order_by('-added_on')
     paginator = Paginator(results, 15)
     try:
         page = paginator.page(int(request.GET.get('page', 1)))
@@ -120,6 +123,7 @@ def latest(request):
     
     return render_to_response('search/search.html', context, context_instance=RequestContext(request))
     
+
 def dewey(request):
     return render_to_response("books/dewey.html",
                           {'nodes':Category.objects.all()},

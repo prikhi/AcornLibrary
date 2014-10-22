@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^lookup/$', views.lookup, name='lookup'),
     url(r'^subjects$', views.subjects, name='subjects'),
     url(r'^subjects/(?P<subject>.+)$', views.subject_results, name='subject_results'),
-    url(r'^(?P<isbn>\d+)/$', views.detail, name='detail'),
+    #url(r'^(?P<isbn>\d+)/$', views.detail, name='detail'),
     url(r'^search/', search_view_factory(
         view_class=SearchView,
         form_class=SearchForm

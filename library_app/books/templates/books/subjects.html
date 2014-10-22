@@ -1,6 +1,7 @@
 {% extends "books/base.html" %}
 {% block content %}
-<div style="padding:50px">
+<div style="padding:20px">
+<h2>Browse by Subject</h2>
 {% for subject in subjects %}
 <a href="/subjects/{{ subject.name }}">{{subject.name}}</a> <br>
 {% endfor %}

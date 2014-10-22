@@ -44,12 +44,7 @@ $(document).ready(function() {
 					plugins: ['remove_button'],
 					delimiter: '%',
 				    persist: false,
-				    create: true /*function(input) {
-				        return {
-				            value: input,
-				            text: input
-				        }
-				    }*/
+				    create: true 
 				});
 				
 	$("#id_subjects").selectize({

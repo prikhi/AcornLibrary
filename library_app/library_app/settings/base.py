@@ -99,7 +99,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+#HAYSTACK_SIGNAL_PROCESSOR = 'books.signals.RelatedRealtimeSignalProcessor'
 
 #TEMPLATE_CONTEXT_PROCESSORS = (
 #'django.contrib.auth.context_processors.auth',

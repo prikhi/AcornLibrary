@@ -8,9 +8,29 @@ from taggit.models import TaggedItemBase
 from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
+def last_location():
+    latest = Book.objects.latest('added_on')
+    return latest.location
+
+def last_owner():
+    latest = Book.objects.latest('added_on')
+    return latest.owner
 
 class TaggedSubject(TaggedItemBase):
     content_object = models.ForeignKey('Book')
+    
+    
+class Category(MPTTModel):
+    number = models.CharField(max_length=3)
+    link_number = models.CharField(max_length=3)
+    title = models.CharField(max_length=100)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    book_count = models.IntegerField(default=0, blank=False, null=False)
+    is_leaf = models.BooleanField(default=False)
+
+    class MPTTMeta:
+        order_insertion_by = ['number']
+    
 
 class Book(models.Model):
     isbn = models.IntegerField(null=True, blank=True)
@@ -21,9 +41,11 @@ class Book(models.Model):
     dewey_decimal = models.CharField(max_length=20, blank=True)
     dewey_description = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
-    location = models.CharField(max_length=200, blank=True)
-    owner = models.CharField(max_length=200, blank=True)
+    location = models.CharField(max_length=200, blank=True)#, default=last_location)
+    owner = models.CharField(max_length=200, blank=True)#, default=last_owner)
     added_on = models.DateTimeField(auto_now_add=True)
+    
+    #reindex_related=('authors','subjects',)
 
     def __unicode__(self):
         return self.title
@@ -76,14 +98,3 @@ class BookForm(ModelForm):
             'title': forms.TextInput(attrs={'size':'70'}),
         }
         
-        
-class Category(MPTTModel):
-    number = models.CharField(max_length=3)
-    link_number = models.CharField(max_length=3)
-    title = models.CharField(max_length=100)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
-    book_count = models.IntegerField(default=0, blank=False, null=False)
-    is_leaf = models.BooleanField(default=False)
-
-    class MPTTMeta:
-        order_insertion_by = ['number']

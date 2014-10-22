@@ -1,6 +1,7 @@
 from django.contrib import admin
 from books.models import Book
 
-admin.site.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    list_filter = ('owner', 'location')
 
-# Register your models here.
+admin.site.register(Book, BookAdmin)
