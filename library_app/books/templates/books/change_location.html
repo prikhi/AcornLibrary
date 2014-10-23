@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load i18n l10n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=app_label %}">{{ app_label|capfirst|escape }}</a>
+&rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+&rsaquo; {% trans 'Change Location' %}
+</div>
+{% endblock %}
+
+{% block content %}
+
+   
+    <form action="" method="post">{% csrf_token %}
+    <div>
+    {% for obj in queryset %}
+    <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk|unlocalize }}" />
+    {% endfor %}
+    New Location: 
+    <input type="text" name="location" label="Location:" />
+    <input type="hidden" name="action" value="change_location" />
+    <input type="hidden" name="post" value="yes" />
+    <input type="submit" value="Change" />
+    </div>
+    </form>
+{% endblock %}

@@ -1,6 +1,9 @@
 from django.contrib import admin
 from books.models import Book
 from django import forms
+from django.template.response import TemplateResponse
+from django.contrib import messages
+from django.contrib.admin import helpers
 
 class RangeForm(forms.Form):
 
@@ -41,10 +44,37 @@ class RangeFilter(admin.filters.FieldListFilter):
             return queryset.filter(**filter_params)
         else:
             return queryset
-            
+
+
+def change_location(modeladmin, request, queryset):
+    #print('something')
+    # The user has already confirmed the deletion.
+    # Do the deletion and return a None to display the change list view again.
+    opts = modeladmin.model._meta
+    app_label = opts.app_label
+    
+    if request.POST.get('post'):
+        n = queryset.count()
+        if n:
+            queryset.update(location=request.POST.get('location'))
+            modeladmin.message_user(request, "Successfully updated location on %s books" % n, messages.SUCCESS)
+        # Return None to display the change list page again.
+        return None
+
+    context = {
+        'queryset': queryset,
+        'opts': opts,
+        'app_label': app_label,
+        'action_checkbox_name': helpers.ACTION_CHECKBOX_NAME,
+    }
+
+    # Display the confirmation page
+    return TemplateResponse(request, "books/change_location.html", context, current_app=modeladmin.admin_site.name)
+change_location.short_description = 'Change Location'        
 
 class BookAdmin(admin.ModelAdmin):
-    list_filter = ('owner', 'location', ('dewey_decimal', RangeFilter))
+    list_filter = (('dewey_decimal', RangeFilter), 'owner', 'location')
+    actions = [change_location]
 
 admin.site.register(Book, BookAdmin)
 admin.filters.FieldListFilter.register(
