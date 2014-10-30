@@ -41,7 +41,7 @@
                 <td valign="top">
                 <p>Subjects:
                 {% for subject in result.object.subjects.all %}
-                    <a href="/subjects/{{ subject.name }}">{{subject.name}}</a> {% if not forloop.last %},&nbsp;{% endif %}
+                    <a href="/subjects/all/{{ subject.name }}">{{subject.name}}</a> {% if not forloop.last %},&nbsp;{% endif %}
                 {% endfor %} 
                 <p>
                 Dewey Decimal: {{ result.object.dewey_decimal }}<p>

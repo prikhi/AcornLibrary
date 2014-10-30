@@ -7,6 +7,8 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage
+from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
 
 from haystack.query import SearchQuerySet
 
@@ -84,16 +86,29 @@ def lookup(request):
 #    return render(request, 'books/index.html', context)
     
     
-def subjects(request):
-    subjects = Book.subjects.all().order_by('name')
-    #subjects = TaggedSubject.objects.filter(book__dewey_decimal__startswith='940')
-    context = {'subjects': subjects}
+def subjects(request, book_type):
+    #subjects = Book.subjects.all().order_by('name')
+    if book_type=='fiction':
+        subjects = Book.subjects.filter(book__dewey_decimal__startswith='813').order_by('name')
+    elif book_type=='non-fiction':
+        queryset = Book.objects.exclude(dewey_decimal__startswith='813')
+        subjects = Book.subjects.filter(book__in=queryset).distinct().order_by('name')
+    else:
+        subjects = Book.subjects.all().order_by('name')
+    context = {
+        'book_type': book_type,
+        'subjects': subjects
+    }
     return render(request, 'books/subjects.html', context)
 
 
-def subject_results(request, subject):
-    #print(subject)
+def subject_results(request, book_type, subject):
     results = Book.objects.filter(subjects__name__in=[subject])
+    if book_type=='fiction':
+        results = results.filter(dewey_decimal__startswith='813')
+    elif book_type=='non-fiction':
+        results = results.exclude(dewey_decimal__startswith='813')    
+    
     paginator = Paginator(results, 15)
     try:
         page = paginator.page(int(request.GET.get('page', 1)))

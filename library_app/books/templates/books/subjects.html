@@ -2,8 +2,14 @@
 {% block content %}
 <div style="padding:20px">
 <h2>Browse by Subject</h2>
+<a class="btn btn-default" href="/subjects/fiction">Fiction</a>
+<a class="btn btn-default" href="/subjects/non-fiction">Non-Fiction</a>
+<a class="btn btn-default" href="/subjects/all">All</a>
+<p>
+<div style="padding:20px">
 {% for subject in subjects %}
-<a href="/subjects/{{ subject.name }}">{{subject.name}}</a> <br>
+<a href="/subjects/{{ book_type }}/{{ subject.name }}">{{subject.name}}</a> <br>
 {% endfor %}
+</div>
 </div>
 {% endblock %}
