@@ -89,7 +89,8 @@ def lookup(request):
 def subjects(request, book_type):
     #subjects = Book.subjects.all().order_by('name')
     if book_type=='fiction':
-        subjects = Book.subjects.filter(book__dewey_decimal__startswith='813').order_by('name')
+        queryset = Book.objects.filter(dewey_decimal__startswith='813')
+        subjects = Book.subjects.filter(book__in=queryset).distinct().order_by('name')
     elif book_type=='non-fiction':
         queryset = Book.objects.exclude(dewey_decimal__startswith='813')
         subjects = Book.subjects.filter(book__in=queryset).distinct().order_by('name')
