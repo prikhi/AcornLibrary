@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.db.models import F
 from django import forms
+from django.core.validators import RegexValidator
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
@@ -38,7 +39,15 @@ class Book(models.Model):
     authors = TaggableManager(verbose_name="Author(s)", help_text="")
     subjects = TaggableManager(verbose_name='FAST subject heading(s)', through=TaggedSubject, help_text="")
     subjects.rel.related_name = "+"
-    dewey_decimal = models.CharField(max_length=20, blank=True)
+    dewey_decimal = models.CharField(max_length=20, blank=True,
+        validators=[
+            RegexValidator(
+                regex=r'[0-9]{3}(\.[0-9]+)*',
+                message='Invalid Dewey Decimal Number',
+                code='invalid_ddc'
+            ),
+        ]
+    )
     dewey_description = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
     location = models.CharField(max_length=200, blank=True)#, default=last_location)
