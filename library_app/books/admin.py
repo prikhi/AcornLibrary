@@ -75,6 +75,7 @@ change_location.short_description = 'Change Location'
 class BookAdmin(admin.ModelAdmin):
     list_filter = (('dewey_decimal', RangeFilter), 'owner', 'location')
     actions = [change_location]
+    list_display = ('title', 'dewey_decimal', 'owner', 'location',)
 
 admin.site.register(Book, BookAdmin)
 admin.filters.FieldListFilter.register(
