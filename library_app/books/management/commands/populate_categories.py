@@ -56,7 +56,7 @@ class Command(BaseCommand):
                         l3_number = raw[:3]
                         l3_title = raw[4:]
                         Category.objects.create(number=l3_number, title=l3_title, parent=level_two_object, is_leaf=True, link_number=l3_number)
-                        if level_three_index==1 and l3_number[2]!=0:
+                        if level_three_index==1 and l3_number[2]!='0':
                             Category.objects.create(number=l2_number, title=l2_title, parent=level_two_object, is_leaf=True, link_number=l2_number)
                 
                 
