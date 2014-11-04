@@ -19,9 +19,11 @@
             }
         });
         
-        $(element).find("tr.even").click(function() {
-            $(this).slideRow('up');
-            $(this).addClass("collapsed");
+        $(element).find("tr.even").click(function(event) {
+            if (event.target.id != 'ebook_link' ) {
+                $(this).slideRow('up');
+                $(this).addClass("collapsed");
+            }
         });
         
     }    

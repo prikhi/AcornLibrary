@@ -33,4 +33,5 @@ td {
 .even { border-top: hidden }
 
 .jstree-themeicon { display: none !important; }
-.jstree li a ins { display:none !important; } 
+
+.ebook { background-color: PowderBlue }

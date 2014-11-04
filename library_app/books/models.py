@@ -53,6 +53,8 @@ class Book(models.Model):
     location = models.CharField(max_length=200, blank=True)#, default=last_location)
     owner = models.CharField(max_length=200, blank=True)#, default=last_owner)
     added_on = models.DateTimeField(auto_now_add=True)
+    ebook = models.FileField(upload_to='ebook', verbose_name='Upload e-book', blank=True, null=True)
+    is_ebook_only = models.BooleanField(verbose_name='E-book only?')
     
     #reindex_related=('authors','subjects',)
 
@@ -94,7 +96,7 @@ class Book(models.Model):
 class BookForm(ModelForm):
     class Meta:
         model = Book
-        fields = ['isbn', 'title', 'authors', 'subjects', 'dewey_decimal', 'description', 'location', 'owner']
+        fields = ['isbn', 'title', 'authors', 'subjects', 'dewey_decimal', 'description', 'location', 'owner', 'ebook', 'is_ebook_only']
         labels = {
             'isbn': 'ISBN',
             'dewey_decimal': 'Dewey Decimal #',
@@ -106,4 +108,21 @@ class BookForm(ModelForm):
             'description': forms.Textarea(attrs={'rows':7, 'cols':70}),
             'title': forms.TextInput(attrs={'size':'70'}),
         }
+        
+    def clean(self):
+        cleaned_data = super(BookForm, self).clean()
+        is_ebook_only = cleaned_data.get('is_ebook_only')
+        if is_ebook_only:
+            location = cleaned_data.get('location')
+            owner = cleaned_data.get('owner')
+            ebook = cleaned_data.get('ebook')
+            
+            if not ebook:
+                raise forms.ValidationError('If \"E-book only\" is checked, you must upload an e-book file')
+                
+            if owner or location:
+                raise forms.ValidationError('If \"E-book only\" is checked, location and owner must be blank')
+                
+        return cleaned_data 
+        
         

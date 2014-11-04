@@ -19,7 +19,8 @@
         </table> -->
 
             <h3>Results</h3>
-            Click on a row to show more information about that book.<br><br>
+            Click on a row to show more information about that book.<br>
+            Books that are only available in electronic form are highlighted in blue.<br><br>
 
         <table id="results" border="1" width="100%">
             <tr>
@@ -28,7 +29,7 @@
             </tr>
           
             {% for result in page.object_list %}
-            <tr>
+            <tr {% if result.object.is_ebook_only %} class="ebook" {%endif %}>
                 <td>{{result.object.title}}</td>
                 <td>
                 {% for author in result.object.authors.all %}    
@@ -36,7 +37,7 @@
                 {% endfor %}
                 
              </tr>
-             <tr>
+             <tr {% if result.object.is_ebook_only %} class="ebook" {%endif %}>
                 <!--<td colspan="2">-->
                 <td valign="top">
                 <p>Subjects:
@@ -45,8 +46,13 @@
                 {% endfor %} 
                 <p>
                 Dewey Decimal: {{ result.object.dewey_decimal }}<p>
+                {% if not result.object.is_ebook_only %}
                 Location: {{ result.object.location }}<p>
                 Owner: {{ result.object.owner }} <p>
+                {% endif %}
+                {% if result.object.ebook %}
+                <a id="ebook_link" href="{{ MEDIA_URL }}{{result.object.ebook}}">Download e-book</a><p>
+                {% endif %}
                 <a href="/entry/{{ result.object.pk }}">Edit this book's info</a>
                 </td>
                 <td valign="top">
