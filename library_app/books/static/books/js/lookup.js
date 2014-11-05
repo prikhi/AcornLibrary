@@ -58,9 +58,17 @@ $(document).ready(function() {
 	$("#id_isbn").focus();
 	
 	$("#id_isbn").keypress(function(event){
-    if(event.which == 13){
-        event.preventDefault();
-        $("#get_info").click();
-    }
-});
+        if(event.which == 13){
+            event.preventDefault();
+            $("#get_info").click();
+        }
+    });
+    
+    $("#id_is_ebook_only").change(function(){
+        if(this.checked) {
+            $("#id_owner").val("");
+            $("#id_location").val("");
+        }
+    });
+    
 });
