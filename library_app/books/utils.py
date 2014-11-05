@@ -42,7 +42,7 @@ def get_book_info(request):
     root = objectify.fromstring(urllib.request.urlopen(url).read())
     response_code = root.response.attrib['code']
     if response_code == '4':
-        # Multiple listings were found. Oh joy. We need to figure out which one of the listings corresponds to the book we're looking for. We do this by getting the titles of hte listings, and comparing them word by word to the google title. We assign a score to each one based on how many matching words there are, and pick the highest scoring one.
+        # Multiple listings were found. Oh joy. We need to figure out which one of the listings corresponds to the book we're looking for. We do this by getting the titles of hte listings and comparing them word by word to the google title. We assign a score to each one based on how many matching words there are, and pick the highest scoring one.
         oclc_titles = [ el.attrib['title'] for el in root.works.iterchildren() ]
         max_score = 0
         highest_scoring_index = 0
@@ -72,10 +72,18 @@ def get_book_info(request):
         response_code = root.response.attrib['code']
     if response_code == '0' or response_code == '2':
         # We successfully got the book information
-        dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
+        try:
+            dewey_decimal = root.recommendations.ddc.mostPopular.attrib['nsfa']
+        except:
+            pass
         if dewey_decimal=='FIC':
             dewey_decimal = root.recommendations.ddc.mostPopular[1].attrib['nsfa']
-        subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
+        #TODO: There many not be any subjects!
+        subjects = []
+        try:
+            subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]
+        except:
+            pass
         if not authors:
             authors = []
             # do a whole bunch of bullshit to clean up the author data. Take out birth/death year, reverse "last, first" format
