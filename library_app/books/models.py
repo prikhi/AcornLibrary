@@ -50,7 +50,7 @@ class Book(models.Model):
     )
     dewey_description = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
-    location = models.CharField(max_length=200, blank=True, default=last_location)
+    location = models.CharField(max_length=200, blank=True)#, default=last_location)
     owner = models.CharField(max_length=200, blank=True, default=last_owner)
     added_on = models.DateTimeField(auto_now_add=True)
     ebook = models.FileField(upload_to='ebook', verbose_name='Upload e-book', blank=True, null=True)
