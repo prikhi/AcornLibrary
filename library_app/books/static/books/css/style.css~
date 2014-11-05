@@ -34,4 +34,4 @@ td {
 
 .jstree-themeicon { display: none !important; }
 
-.ebook { background-color: PowderBlue }
+.ebook { background-color: LightCyan }

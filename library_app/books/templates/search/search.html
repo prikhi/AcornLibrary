@@ -20,12 +20,13 @@
 
             <h3>Results</h3>
             Click on a row to show more information about that book.<br>
-            Books that are only available in electronic form are highlighted in blue.<br><br>
+            Books that are only available in e-book form are highlighted in blue.<br><br>
 
         <table id="results" border="1" width="100%">
             <tr>
                 <th style="width:30%">Title</th>
                 <th>Author(s)</th>
+                <th style="width:8%">E-Book</th>
             </tr>
           
             {% for result in page.object_list %}
@@ -35,6 +36,14 @@
                 {% for author in result.object.authors.all %}    
                     {{ author.name }} {% if not forloop.last %},&nbsp;{% endif %}
                 {% endfor %}
+                </td>
+                <td>
+                {% if result.object.ebook %}
+                <a id="ebook_link" href="{{ MEDIA_URL }}{{result.object.ebook}}">Download</a>
+                {% else %}
+                Not Available
+                {% endif %}
+                </td>
                 
              </tr>
              <tr {% if result.object.is_ebook_only %} class="ebook" {%endif %}>
@@ -42,7 +51,7 @@
                 <td valign="top">
                 <p>Subjects:
                 {% for subject in result.object.subjects.all %}
-                    <a href="/subjects/all/{{ subject.name }}">{{subject.name}}</a> {% if not forloop.last %},&nbsp;{% endif %}
+                    <a href="/subjects/all/{{ subject.name }}">{{subject.name}}</a>{% if not forloop.last %},&nbsp;{% endif %}
                 {% endfor %} 
                 <p>
                 Dewey Decimal: {{ result.object.dewey_decimal }}<p>
@@ -50,14 +59,13 @@
                 Location: {{ result.object.location }}<p>
                 Owner: {{ result.object.owner }} <p>
                 {% endif %}
-                {% if result.object.ebook %}
-                <a id="ebook_link" href="{{ MEDIA_URL }}{{result.object.ebook}}">Download e-book</a><p>
-                {% endif %}
+                
                 <a href="/entry/{{ result.object.pk }}">Edit this book's info</a>
                 </td>
                 <td valign="top">
                 Description: {{ result.object.description }}           
                 </td>
+                <td></td>
              </tr>
             {% empty %}
                 <p>No results found.</p>

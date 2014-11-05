@@ -90,6 +90,7 @@ def subjects(request, book_type):
     if book_type=='fiction':
         queryset = Book.objects.filter(dewey_decimal__startswith='813')
         subjects = Book.subjects.filter(book__in=queryset).order_by('name')
+        print(queryset.count())
     elif book_type=='non-fiction':
         queryset = Book.objects.exclude(dewey_decimal__startswith='813')
         subjects = Book.subjects.filter(book__in=queryset).order_by('name')
@@ -147,7 +148,6 @@ def dewey(request):
 
 def dewey_results(request, ddc):
     results = Book.objects.filter(dewey_decimal__startswith=ddc)
-    #results = SearchQuerySet().all().order_by('-added_on')
     paginator = Paginator(results, 15)
     try:
         page = paginator.page(int(request.GET.get('page', 1)))

@@ -9,9 +9,10 @@ from taggit.models import TaggedItemBase
 from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
-def last_location():
-    latest = Book.objects.latest('added_on')
-    return latest.location
+
+#def last_location():
+#    latest = Book.objects.latest('added_on')
+#    return latest.location
 
 def last_owner():
     latest = Book.objects.latest('added_on')
@@ -60,7 +61,8 @@ class Book(models.Model):
 
     def __unicode__(self):
         return self.title
-        
+    
+    # This is so we can use the standard haystack search template for all results pages    
     def object(self):
         return self
         

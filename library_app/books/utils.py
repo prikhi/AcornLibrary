@@ -78,7 +78,6 @@ def get_book_info(request):
             pass
         if dewey_decimal=='FIC':
             dewey_decimal = root.recommendations.ddc.mostPopular[1].attrib['nsfa']
-        #TODO: There many not be any subjects!
         subjects = []
         try:
             subjects = [ el.text for el in root.recommendations.fast.headings.iterchildren()]

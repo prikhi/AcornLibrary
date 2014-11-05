@@ -35,3 +35,7 @@ td {
 .jstree-themeicon { display: none !important; }
 
 .ebook { background-color: LightCyan }
+
+body {
+  overflow-y: scroll;
+}
