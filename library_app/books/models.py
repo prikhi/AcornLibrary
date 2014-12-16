@@ -27,6 +27,7 @@ class Category(MPTTModel):
     title = models.CharField(max_length=100)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     book_count = models.IntegerField(default=0, blank=False, null=False)
+    #method for this might exist
     is_leaf = models.BooleanField(default=False)
 
     class MPTTMeta:
@@ -50,13 +51,12 @@ class Book(models.Model):
     )
     dewey_description = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
-    location = models.CharField(max_length=200, blank=True)#, default=last_location)
+    location = models.CharField(max_length=200, blank=True)
     owner = models.CharField(max_length=200, blank=True, default=last_owner)
     added_on = models.DateTimeField(auto_now_add=True)
     ebook = models.FileField(upload_to='ebook', verbose_name='Upload e-book', blank=True, null=True)
     is_ebook_only = models.BooleanField(verbose_name='E-book only?')
     
-    #reindex_related=('authors','subjects',)
 
     def __unicode__(self):
         return self.title
@@ -92,7 +92,7 @@ class Book(models.Model):
             
         super(Book, self).save(*args, **kwargs)
 
-
+# Move to forms.py
 class BookForm(ModelForm):
     class Meta:
         model = Book
