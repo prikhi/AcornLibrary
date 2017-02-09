@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, url, include
+from django.views.generic import TemplateView, UpdateView
+
 from haystack.views import SearchView, search_view_factory
 from haystack.forms import SearchForm
-from django.views.generic import TemplateView, UpdateView
 
 from books import views
 from books.models import Book, BookForm

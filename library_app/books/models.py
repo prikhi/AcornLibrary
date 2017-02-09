@@ -8,7 +8,7 @@ from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 from mptt.models import MPTTModel, TreeForeignKey
 
-# Create your models here.
+
 def last_location():
     latest = Book.objects.latest('added_on')
     return latest.location
@@ -35,7 +35,7 @@ class Category(MPTTModel):
     
 
 class Book(models.Model):
-    isbn = models.IntegerField(null=True, blank=True)
+    isbn = models.CharField(max_length=13, blank=True)
     title = models.CharField(max_length=200)
     authors = TaggableManager(verbose_name="Author(s)", help_text="")
     subjects = TaggableManager(verbose_name='FAST subject heading(s)', through=TaggedSubject, help_text="")
