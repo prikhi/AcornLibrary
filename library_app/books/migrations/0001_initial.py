@@ -22,7 +22,7 @@ class Migration(SchemaMigration):
             ('number', self.gf('django.db.models.fields.CharField')(max_length=3)),
             ('link_number', self.gf('django.db.models.fields.CharField')(max_length=3)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('parent', self.gf('mptt.fields.TreeForeignKey')(to=orm['books.Category'], blank=True, null=True, related_name='children')),
+            ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, null=True, to=orm['books.Category'], related_name='children')),
             ('book_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('is_leaf', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
@@ -40,9 +40,11 @@ class Migration(SchemaMigration):
             ('dewey_decimal', self.gf('django.db.models.fields.CharField')(blank=True, max_length=20)),
             ('dewey_description', self.gf('django.db.models.fields.CharField')(blank=True, max_length=200)),
             ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('location', self.gf('django.db.models.fields.CharField')(default='seed office', blank=True, max_length=200)),
-            ('owner', self.gf('django.db.models.fields.CharField')(default='commie', blank=True, max_length=200)),
+            ('location', self.gf('django.db.models.fields.CharField')(blank=True, max_length=200)),
+            ('owner', self.gf('django.db.models.fields.CharField')(blank=True, default='xfghj', max_length=200)),
             ('added_on', self.gf('django.db.models.fields.DateTimeField')(blank=True, auto_now_add=True)),
+            ('ebook', self.gf('django.db.models.fields.files.FileField')(blank=True, null=True, max_length=100)),
+            ('is_ebook_only', self.gf('django.db.models.fields.BooleanField')()),
         ))
         db.send_create_signal('books', ['Book'])
 
@@ -65,10 +67,12 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'dewey_decimal': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '20'}),
             'dewey_description': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '200'}),
+            'ebook': ('django.db.models.fields.files.FileField', [], {'blank': 'True', 'null': 'True', 'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_ebook_only': ('django.db.models.fields.BooleanField', [], {}),
             'isbn': ('django.db.models.fields.IntegerField', [], {'blank': 'True', 'null': 'True'}),
-            'location': ('django.db.models.fields.CharField', [], {'default': "'seed office'", 'blank': 'True', 'max_length': '200'}),
-            'owner': ('django.db.models.fields.CharField', [], {'default': "'commie'", 'blank': 'True', 'max_length': '200'}),
+            'location': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '200'}),
+            'owner': ('django.db.models.fields.CharField', [], {'blank': 'True', 'default': "'xfghj'", 'max_length': '200'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'books.category': {
@@ -80,7 +84,7 @@ class Migration(SchemaMigration):
             'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'link_number': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'to': "orm['books.Category']", 'blank': 'True', 'null': 'True', 'related_name': "'children'"}),
+            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'null': 'True', 'to': "orm['books.Category']", 'related_name': "'children'"}),
             'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})

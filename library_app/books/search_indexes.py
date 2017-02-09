@@ -1,5 +1,7 @@
 import datetime
+
 from haystack import indexes
+
 from books.models import Book
 
 

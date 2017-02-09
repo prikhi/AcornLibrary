@@ -57,34 +57,13 @@ class UpdateBookView(SuccessMessageMixin, UpdateView):
         return context
 
 
-#def entry(request, book=None):
-#    if request.method == 'POST':
-#        form = BookForm(request.POST)
-#        if form.is_valid():
-#            import pdb; pdb.set_trace()
-#            form.save()
-#            messages.success(request, ''.join(['\"', form.cleaned_data['title'], '\"', ' was added successfully.']))
-#            form = BookForm()
-#    else:
-#        form = BookForm()
-#        if book:
-#            form = BookForm(instance = Book.objects.get(pk=book))
-#    return render(request, 'books/entry.html', {
-#        'form': form,
-#    })
-
 def lookup(request):
     results = {'success': False}
     if request.method == 'GET':
         results = utils.get_book_info(request)
     json = simplejson.dumps(results)
     return HttpResponse(json, mimetype='application/json')
-
-#def detail(request, isbn):
-#    book = get_object_or_404(Book, isbn=isbn)
-#    context = {'book': book, }
-#    return render(request, 'books/index.html', context)
-    
+        
     
 def subjects(request, book_type):
     if book_type=='fiction':
@@ -142,7 +121,7 @@ def latest(request):
 
 def dewey(request):
     return render_to_response("books/dewey.html",
-                          {'nodes':Category.objects.all()},
+                          {'nodes': Category.objects.all()},
                           context_instance=RequestContext(request))
                           
 
